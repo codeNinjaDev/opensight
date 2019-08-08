@@ -22,7 +22,7 @@ def make_nodetree(program):
 
     node = program.create_node(func_type)
     node.settings = settings
-    node.set_staticlinks({"num": 20})
+    node.set_static_links({"num": 20})
 
 
 def test_webserver(webserver):
@@ -40,11 +40,11 @@ def main():
 
     program.pipeline.run()
 
-    webserver = WebServer(program)
-
-    test_webserver(webserver)
-
-    uvicorn.run(webserver.app)
+    # webserver = WebServer(program)
+    #
+    # test_webserver(webserver)
+    #
+    # uvicorn.run(webserver.app)
 
 
 if __name__ == "__main__":

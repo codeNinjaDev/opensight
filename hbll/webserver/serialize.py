@@ -4,7 +4,7 @@ from typing import Any, Callable, Dict, List, Optional, Type, TYPE_CHECKING
 from ..backend.manager import Manager
 from ..backend.manager_schema import Function, ModuleItem
 from ..backend.pipeline import Connection, Link, Links, Pipeline, StaticLink
-from ..backend.pipeline_recursive import RecursiveLink
+from ..backend.link import RecursiveLink
 from ..backend.program import Program
 from ..backend.types import *
 from .schema import *
@@ -184,7 +184,7 @@ def _process_node_inputs(program: Program, node: NodeN):
 
     for name in empty_links:
         type = real_node.func.InputTypes[name]
-        real_node.set_staticlink(name, _process_widget(type, node.inputs[name].value))
+        real_node.set_static_link(name, _process_widget(type, node.inputs[name].value))
 
 
 def _process_node_settings(program: Program, node: NodeN):
