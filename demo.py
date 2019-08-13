@@ -8,21 +8,20 @@ from hbll.webserver import WebServer
 
 def make_program():
     program = Program()
-    program.manager.register_module(ModulePath("modules", "six"))
     program.manager.register_module(ModulePath("modules", "seven"))
+
+    program.manager.register_module(ModulePath("modules", "six"))
+    program.manager.register_module(ModulePath("modules", "five"))
 
     return program
 
 
 def make_nodetree(program):
-    func_type = "demo.seven/IsInRange"
-    func = program.manager.funcs[func_type]
-
-    settings = func.Settings(range=func.SettingTypes["range"].create(10, 70))
-
+    func_type = "demo.five/Five"
     node = program.create_node(func_type)
-    node.settings = settings
-    node.set_static_links({"num": 20})
+
+    func_type = "demo.five/Sum"
+    node = program.create_node(func_type)
 
 
 def test_webserver(webserver):
@@ -38,13 +37,11 @@ def main():
 
     make_nodetree(program)
 
-    program.pipeline.run()
+    webserver = WebServer(program)
 
-    # webserver = WebServer(program)
-    #
-    # test_webserver(webserver)
-    #
-    # uvicorn.run(webserver.app)
+    test_webserver(webserver)
+
+    uvicorn.run(webserver.app)
 
 
 if __name__ == "__main__":

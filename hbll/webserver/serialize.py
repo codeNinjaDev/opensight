@@ -14,8 +14,7 @@ __all__ = ("export_manager", "export_nodetree", "import_nodetree")
 
 # ---------------------------------------------------------
 
-
-def _parse_range(type):
+def _rangetype_serialize(type):
     if not isinstance(type, RangeType):
         return None
 
@@ -28,20 +27,20 @@ _normal_types = {int, float, bool, str, Mat, MatBW, Contour, Contours}
 # Each item in _abnormal_types takes in a type and returns InputOutputF if the
 # parser supports the type, or None if it does not
 _abnormal_types: List[Callable[[Type], Optional[InputOutputF]]]
-_abnormal_types = [_parse_range]  # add new type parsers here
+_abnormal_types = [_rangetype_serialize]  # add new type parsers here
 
 
-def get_type(type: Type) -> InputOutputF:
-    if type in _normal_types:
-        return InputOutputF(type=type.__name__, params={})
+def get_type(_type: Type) -> InputOutputF:
+    if _type in _normal_types:
+        return InputOutputF(type=_type.__name__)
 
     for parser in _abnormal_types:
-        IO = parser(type)
+        IO = parser(_type)
 
         if IO is not None:
             return IO
 
-    raise TypeError(f"Unknown type {type}")
+    raise TypeError(f"Unknown type {_type}")
 
 
 def get_types(types):
@@ -190,7 +189,7 @@ def _process_node_inputs(program: Program, node: NodeN):
 def _process_node_settings(program: Program, node: NodeN):
     real_node = program.pipeline.nodes[node.id]
 
-    settings = real_node.func.Settings(**node.settings)
+    settings = real_node.func_type.Settings(**node.settings)
 
     real_node.settings = settings
 
@@ -206,6 +205,7 @@ def import_nodetree(program: Program, nodetree: NodeTreeN):
             program.create_node(node.type, node.id)
 
     for node in nodetree.nodes:
+        _process_node_settings(program, node)
         if LINKS_INSTEAD_OF_INPUTS:
             _process_node_links(program, node)
         else:

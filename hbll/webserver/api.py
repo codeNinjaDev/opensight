@@ -24,4 +24,6 @@ class Api:
         return export_nodetree(self.program.pipeline)
 
     def save_nodes(self, *, nodetree: NodeTreeN):
-        return import_nodetree(self.program, nodetree)
+        import_nodetree(self.program, nodetree)
+
+        self.program.pipeline.run()

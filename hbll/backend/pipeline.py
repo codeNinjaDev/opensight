@@ -20,9 +20,7 @@ Links = Dict[str, Connection]
 class Node:
     def __init__(self, func: Type[Function], id: UUID):
         self.func_type = func
-        self.inputLinks: Dict[str, Optional[Link]] = {
-            name: StaticLink(None) for name in self.func_type.InputTypes.keys()
-        }
+        self.inputLinks: Dict[str, Link] = dict()
         self.func: Optional[Function] = None
         self.id = id
 
@@ -36,9 +34,7 @@ class Node:
         self.has_run = False
 
     def reset_links(self):
-        self.inputLinks: Dict[str, Optional[Link]] = {
-            name: StaticLink(None) for name in self.func_type.InputTypes.keys()
-        }
+        self.inputLinks.clear()
 
     def ensure_init(self):
         if self.func is not None:
@@ -86,7 +82,7 @@ class Pipeline:
             self.run_order = list(chain.from_iterable(toposort(self.adjList)))
 
         for n in self.run_order:  # Each node to be processed
-            n.run()
+            print(n.run())
 
     def create_node(self, func: Type[Function], uuid: UUID):
         """
