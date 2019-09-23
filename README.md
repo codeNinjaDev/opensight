@@ -1,5 +1,7 @@
-# OpenSight: The all-in-one opensource vision package for FRC
+# OpenSight: the powerful, easy-to-use vision suite
 
+## Want to get it?
+Get the latest <a href="https://github.com/opensight-cv/opsi-gen/releases">release</a>!
 ## About
 
 
