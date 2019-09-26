@@ -14,5 +14,7 @@ The modules determine what the vision pipeline tracks and to what extent. OpenSi
 
 A common pipeline will be: **Camera Server**->**Blur** -> **HSV/Color Mask** -> **Find Contours** -> **Select Largest Contour**
 
+One unique advantage of OpenSight is its extendability. You can create your own module and with a simple pull request, make it available to all teams!
+
 ### Manager
 The manager is the backbone of OpenSight. It controls the pipeline and manages the code. Once you create your own pipeline, it generates the python code for you to use on your robot!
